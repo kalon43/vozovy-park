@@ -45,26 +45,26 @@ console.log("\n🚗 Simulace provozu:");
 console.log("───────────────────────────────────────────────────");
 // Octavia jede 200 km (s klimatizací)
 var octavia = fleet[0];
-console.log("\nOctavia \u2013 jede 200 km (klima: ".concat(octavia.klimatizace, "):"));
+console.log("\nOctavia – jede 200 km (klima: ".concat(octavia.klimatizace, "):"));
 octavia.jet(200);
-console.log("  Spot\u0159eba na 200 km: ".concat(octavia.vypocitejSpotreba(200).toFixed(2), " L"));
+console.log("  Spotřeba na 200 km: ".concat(octavia.vypocitejSpotreba(200).toFixed(2), " L"));
 // Golf jede 150 km (bez klimatizace)
 var golf = fleet[1];
-console.log("\nGolf \u2013 jede 150 km (klima: ".concat(golf.klimatizace, "):"));
+console.log("\nGolf – jede 150 km (klima: ".concat(golf.klimatizace, "):"));
 golf.jet(150);
-console.log("  Spot\u0159eba na 150 km: ".concat(golf.vypocitejSpotreba(150).toFixed(2), " L"));
+console.log("  Spotřeba na 150 km: ".concat(golf.vypocitejSpotreba(150).toFixed(2), " L"));
 // Sprinter naložen 2 tunami, jede 100 km
 var sprinter = fleet[2];
-console.log("\nSprinter \u2013 nalo\u017Een 2 t, jede 100 km:");
+console.log("\nSprinter – naložen 2 t, jede 100 km:");
 sprinter.aktualniNakladTun = 2;
 sprinter.jet(100);
-console.log("  Spot\u0159eba (2 t n\u00E1klad, 100 km): ".concat(sprinter.vypocitejSpotreba(100).toFixed(2), " L"));
+console.log("  Spotřeba (2 t náklad, 100 km): ".concat(sprinter.vypocitejSpotreba(100).toFixed(2), " L"));
 // MAN plně naložen (20 t), jede 300 km
 var man = fleet[3];
-console.log("\nMAN TGX \u2013 pln\u011B nalo\u017Een 20 t, jede 300 km:");
+console.log("\nMAN TGX – plně naložen 20 t, jede 300 km:");
 man.aktualniNakladTun = 20;
 man.jet(300);
-console.log("  Spot\u0159eba (20 t n\u00E1klad, 300 km): ".concat(man.vypocitejSpotreba(300).toFixed(2), " L"));
+console.log("  Spotřeba (20 t náklad, 300 km): ".concat(man.vypocitejSpotreba(300).toFixed(2), " L"));
 // ─── 4. Tankování ─────────────────────────────────────────────────────────
 console.log("\n⛽ Tankování:");
 console.log("───────────────────────────────────────────────────");

@@ -32,7 +32,7 @@ class OsobniVuz extends Vozidlo {
     this.klimatizace = klimatizace;
   }
   get pocetMist(){ return this._pocetMist }
-  set pocetMist(v){ if(v<1 || v>9){ console.error(`[${this.spz}] Počet míst musí být 1–9. Nastaveno výchozích 5.`); this._pocetMist = 5 } else { this._pocetMist = v } }
+  set pocetMist(v){ if(v<1 || v>8){ console.error(`[${this.spz}] Počet míst musí být 1–8. Nastaveno výchozích 5.`); this._pocetMist = 5 } else { this._pocetMist = v } }
   vypocitejSpotreba(km){ const efektivniSpotreba = this.spotreba + (this.klimatizace ? 0.5 : 0); return (efektivniSpotreba * km) / 100 }
   getInfo(){ const servis = this.jeServisNutny() ? " ⚠️ SERVIS!" : ""; return `[OSOBNÍ] ${this.znacka} (${this.spz}) | Nájezd: ${this.najetKm} km | Nádrž: ${this.stavNadrze.toFixed(1)}/${this.kapacitaNadrze} L | Místa: ${this._pocetMist} | Klima: ${this.klimatizace ? "ano" : "ne"}` + servis }
   jet(km){ if(km<=0){ console.error(`[${this.spz}] Počet km musí být kladný.`); return } const potrebaPaliva = this.vypocitejSpotreba(km); if(potrebaPaliva > this.stavNadrze){ console.error(`[${this.spz}] Nedostatek paliva! Potřeba: ${potrebaPaliva.toFixed(2)} L, dostupné: ${this.stavNadrze.toFixed(1)} L`); return } this.stavNadrze = this.stavNadrze - potrebaPaliva; this.najetKm = this.najetKm + km; console.log(`[${this.spz}] Ujeto ${km} km, spotřebováno ${potrebaPaliva.toFixed(2)} L.`); if(this.jeServisNutny()){ console.warn(`[${this.spz}] ⚠️  Vozidlo překročilo servisní limit ${this.servisLimitKm} km!`) } }

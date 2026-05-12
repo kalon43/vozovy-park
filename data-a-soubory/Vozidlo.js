@@ -44,7 +44,7 @@ var Vozidlo = /** @class */ (function () {
         /** Setter pro nájezd – zakazuje záporné hodnoty */
         set: function (hodnota) {
             if (hodnota < 0) {
-                console.error("[".concat(this._spz, "] N\u00E1jezd nem\u016F\u017Ee b\u00FDt z\u00E1porn\u00FD! Hodnota ignorov\u00E1na."));
+                console.error("[".concat(this._spz, "] Nájezd nemůže být záporný! Hodnota ignorována."));
                 return;
             }
             this._najetKm = hodnota;
@@ -58,11 +58,11 @@ var Vozidlo = /** @class */ (function () {
         set: function (hodnota) {
             if (hodnota < 0) {
                 this._stavNadrze = 0;
-                console.warn("[".concat(this._spz, "] N\u00E1dr\u017E je pr\u00E1zdn\u00E1!"));
+                console.warn("[".concat(this._spz, "] Nádrž je prázdná!"));
             }
             else if (hodnota > this._kapacitaNadrze) {
                 this._stavNadrze = this._kapacitaNadrze;
-                console.warn("[".concat(this._spz, "] N\u00E1dr\u017E je pln\u00E1, p\u0159ebytek ignorov\u00E1n."));
+                console.warn("[".concat(this._spz, "] Nádrž je plná, přebytek ignorován."));
             }
             else {
                 this._stavNadrze = hodnota;
@@ -88,11 +88,11 @@ var Vozidlo = /** @class */ (function () {
      */
     Vozidlo.prototype.tankovat = function (litry) {
         if (litry <= 0) {
-            console.error("[".concat(this._spz, "] Mno\u017Estv\u00ED paliva mus\u00ED b\u00FDt kladn\u00E9 \u010D\u00EDslo."));
+            console.error("[".concat(this._spz, "] Množství paliva musí být kladné číslo."));
             return;
         }
         this.stavNadrze = this._stavNadrze + litry;
-        console.log("[".concat(this._spz, "] Natankov\u00E1no. Stav n\u00E1dr\u017Ee: ").concat(this._stavNadrze.toFixed(1), " / ").concat(this._kapacitaNadrze, " L"));
+        console.log("[".concat(this._spz, "] Natankováno. Stav nádrže: ").concat(this._stavNadrze.toFixed(1), " / ").concat(this._kapacitaNadrze, " L"));
     };
     /**
      * Zjistí, zda vozidlo překročilo servisní limit km.

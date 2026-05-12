@@ -87,7 +87,7 @@ golf.najetKm = 20500;
 // Projdeme celý fleet jednotně – každý objekt zavolá jeServisNutny() a getInfo()
 fleet.forEach(function (v) {
     var stav = v.jeServisNutny() ? "⚠️  VYŽADUJE SERVIS" : "✅ V pořádku";
-    console.log("  ".concat(v.znacka, " (").concat(v.spz, "): ").concat(stav, " | N\u00E1jezd: ").concat(v.najetKm, " / ").concat(v.servisLimitKm, " km"));
+    console.log("  ".concat(v.znacka, " (").concat(v.spz, "): ").concat(stav, " | Nájezd: ").concat(v.najetKm, " / ").concat(v.servisLimitKm, " km"));
 });
 // ─── 7. Závěrečný výpis stavu parku ──────────────────────────────────────
 console.log("\n📋 Stav parku po simulaci:");

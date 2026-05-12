@@ -43,8 +43,8 @@ var NakladniVuz = /** @class */ (function (_super) {
         get: function () { return this._nosnostTun; },
         /** Setter – nosnost musí být kladné číslo */
         set: function (hodnota) {
-            if (hodnota <= 0) {
-                console.error("[".concat(this.spz, "] Nosnost mus\u00ED b\u00FDt kladn\u00E1. Nastavena v\u00FDchoz\u00ED hodnota 1 t."));
+                if (hodnota <= 0) {
+                console.error("[".concat(this.spz, "] Nosnost musí být kladná. Nastavena výchozí hodnota 1 t."));
                 this._nosnostTun = 1;
             }
             else {
@@ -62,11 +62,11 @@ var NakladniVuz = /** @class */ (function (_super) {
          */
         set: function (hodnota) {
             if (hodnota < 0) {
-                console.error("[".concat(this.spz, "] N\u00E1klad nem\u016F\u017Ee b\u00FDt z\u00E1porn\u00FD."));
+                console.error("[".concat(this.spz, "] Náklad nemůže být záporný."));
                 this._aktualniNakladTun = 0;
             }
             else if (hodnota > this._nosnostTun) {
-                console.error("[".concat(this.spz, "] N\u00E1klad ").concat(hodnota, " t p\u0159ekra\u010Duje nosnost ").concat(this._nosnostTun, " t! Nastavena maxim\u00E1ln\u00ED hodnota."));
+                console.error("[".concat(this.spz, "] Náklad ").concat(hodnota, " t překračuje nosnost ").concat(this._nosnostTun, " t! Nastavena maximální hodnota."));
                 this._aktualniNakladTun = this._nosnostTun;
             }
             else {
@@ -91,10 +91,10 @@ var NakladniVuz = /** @class */ (function (_super) {
      */
     NakladniVuz.prototype.getInfo = function () {
         var servis = this.jeServisNutny() ? " ⚠️ SERVIS!" : "";
-        return ("[N\u00C1KLADN\u00CD] ".concat(this.znacka, " (").concat(this.spz, ") | ") +
-            "N\u00E1jezd: ".concat(this.najetKm, " km | ") +
-            "N\u00E1dr\u017E: ".concat(this.stavNadrze.toFixed(1), "/").concat(this.kapacitaNadrze, " L | ") +
-            "N\u00E1klad: ".concat(this._aktualniNakladTun, "/").concat(this._nosnostTun, " t") +
+        return ("[NÁKLADNÍ] ".concat(this.znacka, " (").concat(this.spz, ") | ") +
+            "Nájezd: ".concat(this.najetKm, " km | ") +
+            "Nádrž: ".concat(this.stavNadrze.toFixed(1), "/").concat(this.kapacitaNadrze, " L | ") +
+            "Náklad: ".concat(this._aktualniNakladTun, "/").concat(this._nosnostTun, " t") +
             servis);
     };
     /**
@@ -103,19 +103,19 @@ var NakladniVuz = /** @class */ (function (_super) {
      */
     NakladniVuz.prototype.jet = function (km) {
         if (km <= 0) {
-            console.error("[".concat(this.spz, "] Po\u010Det km mus\u00ED b\u00FDt kladn\u00FD."));
+            console.error("[".concat(this.spz, "] Počet km musí být kladný."));
             return;
         }
         var potrebaPaliva = this.vypocitejSpotreba(km);
         if (potrebaPaliva > this.stavNadrze) {
-            console.error("[".concat(this.spz, "] Nedostatek paliva! Pot\u0159eba: ").concat(potrebaPaliva.toFixed(2), " L, dostupn\u00E9: ").concat(this.stavNadrze.toFixed(1), " L"));
+            console.error("[".concat(this.spz, "] Nedostatek paliva! Potřeba: ").concat(potrebaPaliva.toFixed(2), " L, dostupné: ").concat(this.stavNadrze.toFixed(1), " L"));
             return;
         }
         this.stavNadrze = this.stavNadrze - potrebaPaliva;
         this.najetKm = this.najetKm + km;
-        console.log("[".concat(this.spz, "] Ujeto ").concat(km, " km (n\u00E1klad ").concat(this._aktualniNakladTun, " t), spot\u0159ebov\u00E1no ").concat(potrebaPaliva.toFixed(2), " L."));
+        console.log("[".concat(this.spz, "] Ujeto ").concat(km, " km (náklad ").concat(this._aktualniNakladTun, " t), spotřebováno ").concat(potrebaPaliva.toFixed(2), " L."));
         if (this.jeServisNutny()) {
-            console.warn("[".concat(this.spz, "] \u26A0\uFE0F  Vozidlo p\u0159ekro\u010Dilo servisn\u00ED limit ").concat(this.servisLimitKm, " km!"));
+            console.warn("[".concat(this.spz, "] ⚠️  Vozidlo překročilo servisní limit ").concat(this.servisLimitKm, " km!"));
         }
     };
     return NakladniVuz;

@@ -1,12 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Evidence vozového parku</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+    <main class="container">
+        <header class="hero">
+            <h1>Evidence vozového parku</h1>
+            <p>Interaktivní správa osobních a nákladních vozidel.</p>
+        </header>
+
+        <section class="panel">
+            <h2>Přidat vozidlo</h2>
+            <form id="add-vehicle-form" class="grid-form">
+                <label>Typ
+                    <select id="add-typ" required>
+                        <option value="osobni">Osobní</option>
+                        <option value="nakladni">Nákladní</option>
+                    </select>
+                </label>
+                <label>Značka
+                    <input id="add-znacka" type="text" required placeholder="např. Škoda Fabia">
+                </label>
+                <label>SPZ
+                    <input id="add-spz" type="text" required placeholder="např. 1AA 1234">
+                </label>
+                <label>Spotřeba (L/100 km)
+                    <input id="add-spotreba" type="number" min="0.1" step="0.1" required>
+                </label>
+                <label>Kapacita nádrže (L)
+                    <input id="add-kapacita" type="number" min="1" step="0.1" required>
+                </label>
+                <label>Servisní limit (km)
+                    <input id="add-servis" type="number" min="1" step="1" required>
+                </label>
+
+                <div id="osobni-fields" class="subgroup">
+                    <label>Počet míst
+                        <input id="add-pocet-mist" type="number" min="1" max="9" step="1" value="5">
+                    </label>
+                    <label class="checkbox-row">
+                        <input id="add-klima" type="checkbox">
+                        Klimatizace
+                    </label>
+                </div>
+
+                <div id="nakladni-fields" class="subgroup hidden">
+                    <label>Nosnost (t)
+                        <input id="add-nosnost" type="number" min="0.1" step="0.1" value="1">
+                    </label>
+                </div>
+
+                <button type="submit">Přidat vozidlo</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Akce s vozidlem</h2>
+            <form id="action-form" class="grid-form">
+                <label>Vyber vozidlo
+                    <select id="vehicle-select" required></select>
+                </label>
+                <label>Ujetá vzdálenost (km)
+                    <input id="drive-km" type="number" min="1" step="1" value="100">
+                </label>
+                <label id="cargo-label" class="hidden">Náklad před jízdou (t)
+                    <input id="cargo-tons" type="number" min="0" step="0.1" value="0">
+                </label>
+                <label>Tankování (L)
+                    <input id="tank-liters" type="number" min="0.1" step="0.1" value="10">
+                </label>
+                <div class="actions">
+                    <button type="button" id="drive-btn">Jet</button>
+                    <button type="button" id="tank-btn">Tankovat</button>
+                </div>
+            </form>
+            <p id="status" class="status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel">
+            <div class="section-head">
+                <h2>Aktuální stav</h2>
+                <div id="summary" class="summary"></div>
+            </div>
+            <div id="fleet-list" class="fleet-list"></div>
+        </section>
+
+        <section class="panel">
+            <div class="section-head">
+                <h2>Historie akcí</h2>
+                <button type="button" id="clear-history-btn">Vymazat historii</button>
+            </div>
+            <ul id="history-list" class="history-list"></ul>
+        </section>
+    </main>
+
+    <script src="dist/bundle.js"></script>
 </body>
-<script src="dist/bundle.js"></script>
 </html>

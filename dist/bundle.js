@@ -156,12 +156,40 @@
    // Pokud upravuješ JavaScriptový bundle.js (Zdroj 3):
 function vytvorVozidlo(data) {
   if (data.typ === "osobni") {
-    return new OsobniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist, data.klimatizace);
+    return new OsobniVuz(
+      data.id, 
+      data.znacka, 
+      data.spz, 
+      data.spotreba, 
+      data.kapacitaNadrze, 
+      data.servisLimitKm, 
+      data.pocetMist, 
+      data.klimatizace
+    );
   }
+    
   if (data.typ === "elektricke") {
-    return new ElektrickyVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist);
+    return new ElektrickyVuz(
+      data.id, 
+      data.znacka, 
+      data.spz, 
+      data.spotreba, 
+      data.kapacitaNadrze, // u elektroauta slouží jako kapacita baterie v kWh
+      data.servisLimitKm, 
+      data.pocetMist
+    );
   }
-  return new NakladniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.nosnostTun);
+  
+  // Sem to skočí jen v případě, že to není osobní ani elektrické (takže nákladní)
+  return new NakladniVuz(
+    data.id, 
+    data.znacka, 
+    data.spz, 
+    data.spotreba, 
+    data.kapacitaNadrze, 
+    data.servisLimitKm, 
+    data.nosnostTun
+  );
 }
 
   const fleet = katalog.map(vytvorVozidlo);
@@ -287,7 +315,7 @@ function vytvorVozidlo(data) {
   function updateCargoVisibility() {
     const vehicle = selectedVehicle();
     const showCargo = vehicle instanceof NakladniVuz;
-    els.cargoWrap.classList.toggle("hidden", !showCargo);
+    els.cargoWrap?.classList.toggle("hidden", !showCargo);
   }
 
   els.addTyp.addEventListener("change", updateAddFormVisibility);

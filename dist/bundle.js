@@ -153,12 +153,16 @@
     { id: "v004", typ: "nakladni", znacka: "MAN TGX", spz: "4GH 3344", spotreba: 28.0, kapacitaNadrze: 400, servisLimitKm: 50000, nosnostTun: 24 }
   ];
 
-  function vytvorVozidlo(data) {
-    if (data.typ === "osobni") {
-      return new OsobniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist, data.klimatizace);
-    }
-    return new NakladniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.nosnostTun);
+   // Pokud upravuješ JavaScriptový bundle.js (Zdroj 3):
+function vytvorVozidlo(data) {
+  if (data.typ === "osobni") {
+    return new OsobniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist, data.klimatizace);
   }
+  if (data.typ === "elektricke") {
+    return new ElektrickyVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist);
+  }
+  return new NakladniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.nosnostTun);
+}
 
   const fleet = katalog.map(vytvorVozidlo);
 

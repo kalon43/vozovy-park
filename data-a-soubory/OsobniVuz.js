@@ -1,101 +1,77 @@
-"use strict";
 /**
  * OsobniVuz.ts – Konkrétní třída pro osobní automobil
  *
  * Dědí od abstraktní třídy Vozidlo a implementuje vlastní
  * výpočet spotřeby: fixní spotřeba + příplatek za klimatizaci.
  */
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OsobniVuz = void 0;
-var Vozidlo_1 = require("./Vozidlo");
-var OsobniVuz = /** @class */ (function (_super) {
-    __extends(OsobniVuz, _super);
+import { Vozidlo } from "./Vozidlo";
+export class OsobniVuz extends Vozidlo {
+    /** Počet míst k sezení (včetně řidiče) */
+    _pocetMist = 5;
+    /** Přítomnost klimatizace – přidává 0,5 L/100 km ke spotřebě */
+    klimatizace;
     /**
      * Konstruktor osobního vozu.
      * Volá konstruktor rodičovské třídy (super) a inicializuje vlastní atributy.
      */
-    function OsobniVuz(id, znacka, spz, spotreba, kapacitaNadrze, servisLimitKm, pocetMist, klimatizace) {
-        var _this = _super.call(this, id, znacka, spz, spotreba, kapacitaNadrze, servisLimitKm) || this;
-        /** Počet míst k sezení (včetně řidiče) */
-        _this._pocetMist = 5;
-        _this.pocetMist = pocetMist; // přes setter kvůli validaci
-        _this.klimatizace = klimatizace;
-        return _this;
+    constructor(id, znacka, spz, spotreba, kapacitaNadrze, servisLimitKm, pocetMist, klimatizace) {
+        super(id, znacka, spz, spotreba, kapacitaNadrze, servisLimitKm);
+        this.pocetMist = pocetMist; // přes setter kvůli validaci
+        this.klimatizace = klimatizace;
     }
-    Object.defineProperty(OsobniVuz.prototype, "pocetMist", {
-        // ─── Getter / Setter pro počet míst ───────────────────────────────────
-        get: function () { return this._pocetMist; },
-        /** Setter – počet míst musí být v rozsahu 1–9 */
-        set: function (hodnota) {
-            if (hodnota < 1 || hodnota > 9) {
-                console.error("[".concat(this.spz, "] Počet míst musí být 1–9. Nastaveno výchozích 5."));
-                this._pocetMist = 5;
-            }
-            else {
-                this._pocetMist = hodnota;
-            }
-        },
-        enumerable: false,
-        configurable: true
-    });
+    // ─── Getter / Setter pro počet míst ───────────────────────────────────
+    get pocetMist() { return this._pocetMist; }
+    /** Setter – počet míst musí být v rozsahu 1–9 */
+    set pocetMist(hodnota) {
+        if (hodnota < 1 || hodnota > 9) {
+            console.error(`[${this.spz}] Počet míst musí být 1–9. Nastaveno výchozích 5.`);
+            this._pocetMist = 5;
+        }
+        else {
+            this._pocetMist = hodnota;
+        }
+    }
     // ─── Implementace abstraktních metod ──────────────────────────────────
     /**
      * Výpočet spotřeby osobního vozu.
      * Vzorec: (základní spotřeba + příplatek za klimatizaci) × km / 100
      * Klimatizace přidává 0,5 L/100 km.
      */
-    OsobniVuz.prototype.vypocitejSpotreba = function (km) {
-        var efektivniSpotreba = this.spotreba + (this.klimatizace ? 0.5 : 0);
+    vypocitejSpotreba(km) {
+        const efektivniSpotreba = this.spotreba + (this.klimatizace ? 0.5 : 0);
         return (efektivniSpotreba * km) / 100;
-    };
+    }
     /**
      * Textový popis vozidla pro výpis do konzole / tabulky.
      */
-    OsobniVuz.prototype.getInfo = function () {
-        var servis = this.jeServisNutny() ? " ⚠️ SERVIS!" : "";
-        return ("[OSOBNÍ] ".concat(this.znacka, " (").concat(this.spz, ") | ") +
-            "Nájezd: ".concat(this.najetKm, " km | ") +
-            "Nádrž: ".concat(this.stavNadrze.toFixed(1), "/").concat(this.kapacitaNadrze, " L | ") +
-            "Místa: ".concat(this._pocetMist, " | ") +
-            "Klima: ".concat(this.klimatizace ? "ano" : "ne") +
+    getInfo() {
+        const servis = this.jeServisNutny() ? " ⚠️ SERVIS!" : "";
+        return (`[OSOBNÍ] ${this.znacka} (${this.spz}) | ` +
+            `Nájezd: ${this.najetKm} km | ` +
+            `Nádrž: ${this.stavNadrze.toFixed(1)}/${this.kapacitaNadrze} L | ` +
+            `Místa: ${this._pocetMist} | ` +
+            `Klima: ${this.klimatizace ? "ano" : "ne"}` +
             servis);
-    };
+    }
     /**
      * Simulace jízdy – odečte spotřebované palivo, přičte km.
      * Kontroluje, zda má vozidlo dostatek paliva na danou trasu.
      */
-    OsobniVuz.prototype.jet = function (km) {
+    jet(km) {
         if (km <= 0) {
-            console.error("[".concat(this.spz, "] Počet km musí být kladný."));
+            console.error(`[${this.spz}] Počet km musí být kladný.`);
             return;
         }
-        var potrebaPaliva = this.vypocitejSpotreba(km);
+        const potrebaPaliva = this.vypocitejSpotreba(km);
         if (potrebaPaliva > this.stavNadrze) {
-            console.error("[".concat(this.spz, "] Nedostatek paliva! Potřeba: ").concat(potrebaPaliva.toFixed(2), " L, dostupné: ").concat(this.stavNadrze.toFixed(1), " L"));
+            console.error(`[${this.spz}] Nedostatek paliva! Potřeba: ${potrebaPaliva.toFixed(2)} L, dostupné: ${this.stavNadrze.toFixed(1)} L`);
             return;
         }
         this.stavNadrze = this.stavNadrze - potrebaPaliva;
         this.najetKm = this.najetKm + km;
-        console.log("[".concat(this.spz, "] Ujeto ").concat(km, " km, spotřebováno ").concat(potrebaPaliva.toFixed(2), " L."));
+        console.log(`[${this.spz}] Ujeto ${km} km, spotřebováno ${potrebaPaliva.toFixed(2)} L.`);
         if (this.jeServisNutny()) {
-            console.warn("[".concat(this.spz, "] ⚠️  Vozidlo překročilo servisní limit ").concat(this.servisLimitKm, " km!"));
+            console.warn(`[${this.spz}] ⚠️  Vozidlo překročilo servisní limit ${this.servisLimitKm} km!`);
         }
-    };
-    return OsobniVuz;
-}(Vozidlo_1.Vozidlo));
-exports.OsobniVuz = OsobniVuz;
+    }
+}

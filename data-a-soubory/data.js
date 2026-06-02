@@ -1,4 +1,3 @@
-"use strict";
 /**
  * data.ts – Datový číselník vozového parku
  *
@@ -6,13 +5,11 @@
  * bez jakékoli logiky. Oddělení dat od logiky zajišťuje, že při změně
  * ceníku nebo přidání vozidla není třeba měnit žádný jiný soubor.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.katalog = void 0;
 /**
  * Katalog vozidel – "surová" data bez jakékoli třídy.
  * Program z těchto objektů vytvoří živé instance tříd OsobniVuz / NakladniVuz.
  */
-exports.katalog = [
+export const katalog = [
     {
         id: "v001",
         typ: "osobni",
@@ -55,4 +52,14 @@ exports.katalog = [
         servisLimitKm: 50000,
         nosnostTun: 24,
     },
+    {
+        id: "v005",
+        typ: "elektricke",
+        znacka: "Tesla Model 3",
+        spz: "ELB 1234",
+        spotreba: 15.0, // 15 kWh / 100 km
+        kapacitaNadrze: 60, // 60 kWh baterie
+        servisLimitKm: 40000, // elektromobily mají delší servisní intervaly
+        pocetMist: 5
+    }
 ];

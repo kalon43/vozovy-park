@@ -31,27 +31,24 @@ export type NakladniVuzData = {
   nosnostTun: number;     // maximální přípustný náklad v tunách
 };
 
-/** Typ pro elektrické auto v číselníku */
-export type ElektrickyVuzData = {
+/** Typ pro elektrický automobil v číselníku */
+export type ElektrickeAutoData = {
   id: string;
   typ: "elektricke";
   znacka: string;
   spz: string;
-  spotreba: number;       // průměrná spotřeba v kWh/100 km
-  kapacitaNadrze: number; // kapacita baterie v kWh
-  servisLimitKm: number;  
-  pocetMist: number;
+  spotreba: number;          // spotřeba v kWh/100 km
+  kapacitaNadrze: number;    // kapacita baterie v kWh
+  servisLimitKm: number;
+  rekuperace: boolean;
 };
 
-// Do pole katalog přidáme například Teslu:
-
-
 /** Sjednocený typ pro položku číselníku */
-export type VozidloData = OsobniVuzData | NakladniVuzData | ElektrickyVuzData;
+export type VozidloData = OsobniVuzData | NakladniVuzData | ElektrickeAutoData;
 
 /**
  * Katalog vozidel – "surová" data bez jakékoli třídy.
- * Program z těchto objektů vytvoří živé instance tříd OsobniVuz / NakladniVuz.
+ * Program z těchto objektů vytvoří živé instance tříd OsobniVuz / NakladniVuz / ElektrickeAuto.
  */
 export const katalog: VozidloData[] = [
   {
@@ -100,10 +97,10 @@ export const katalog: VozidloData[] = [
     id: "v005",
     typ: "elektricke",
     znacka: "Tesla Model 3",
-    spz: "ELB 1234",
-    spotreba: 15.0,        // 15 kWh / 100 km
-    kapacitaNadrze: 60,    // 60 kWh baterie
-    servisLimitKm: 40000,  // elektromobily mají delší servisní intervaly
-    pocetMist: 5
-}
+    spz: "5JK 5566",
+    spotreba: 15.8,
+    kapacitaNadrze: 75,
+    servisLimitKm: 30000,
+    rekuperace: true,
+  },
 ];

@@ -10,6 +10,7 @@
 import { katalog } from "./data";
 import { OsobniVuz } from "./OsobniVuz";
 import { NakladniVuz } from "./NakladniVuz";
+import { ElektrickeAuto } from "./ElektrickyVuz";
 // ─── 1. Vytvoření instancí z datového číselníku ───────────────────────────
 /**
  * Tovární funkce – přijme surový objekt z číselníku a vrátí
@@ -20,8 +21,11 @@ function vytvorVozidlo(data) {
     if (data.typ === "osobni") {
         return new OsobniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.pocetMist, data.klimatizace);
     }
-    else {
+    else if (data.typ === "nakladni") {
         return new NakladniVuz(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.nosnostTun);
+    }
+    else {
+        return new ElektrickeAuto(data.id, data.znacka, data.spz, data.spotreba, data.kapacitaNadrze, data.servisLimitKm, data.rekuperace);
     }
 }
 /**
@@ -63,12 +67,18 @@ console.log(`\nMAN TGX – plně naložen 20 t, jede 300 km:`);
 man.aktualniNakladTun = 20;
 man.jet(300);
 console.log(`  Spotřeba (20 t náklad, 300 km): ${man.vypocitejSpotreba(300).toFixed(2)} L`);
+// Tesla jede 220 km (s rekuperací)
+const tesla = fleet[4];
+console.log(`\nTesla Model 3 – jede 220 km (rekuperace: ${tesla.rekuperace}):`);
+tesla.jet(220);
+console.log(`  Spotřeba na 220 km: ${tesla.vypocitejSpotreba(220).toFixed(2)} kWh`);
 // ─── 4. Tankování ─────────────────────────────────────────────────────────
 console.log("\n⛽ Tankování:");
 console.log("───────────────────────────────────────────────────");
 octavia.tankovat(30);
 sprinter.tankovat(60);
 sprinter.tankovat(200); // pokus o přetečení – setter to ohlídá
+tesla.tankovat(40);
 // ─── 5. Test validace setterů ────────────────────────────────────────────
 console.log("\n🛡️  Test validace (záměrně chybné hodnoty):");
 console.log("───────────────────────────────────────────────────");
@@ -77,6 +87,9 @@ testOsobni.pocetMist = -3; // neplatný počet míst – setter opraví na vých
 const testNakladni = new NakladniVuz("t2", "Test Truck", "9ZZ 0001", 12, 100, 5000, 5);
 testNakladni.aktualniNakladTun = 99; // přesahuje nosnost 5 t
 testNakladni.jet(-50); // záporné km
+const testElektricke = new ElektrickeAuto("t3", "Test EV", "9ZZ 0002", 18, 60, 12000, true);
+testElektricke.jet(-20); // záporné km
+testElektricke.tankovat(-10); // záporné nabíjení
 // ─── 6. Servisní kontrola (polymorfismus) ────────────────────────────────
 console.log("\n🔧 Servisní kontrola – projíždí celý fleet:");
 console.log("───────────────────────────────────────────────────");
@@ -95,3 +108,11 @@ fleet.forEach((v, i) => {
 console.log("\n═══════════════════════════════════════════════════");
 console.log("        Testování dokončeno – vše funguje ✅        ");
 console.log("═══════════════════════════════════════════════════");
+// ─── 8. Základní testy (výstupní data) ─────────────────────────────────────
+// Náklad před jízdou
+const cargoWrap = document.getElementById("cargo-wrap");
+const cargoTun = document.getElementById("cargo-tun");
+if (cargoWrap && cargoTun) {
+    console.log(`Náklad před jízdou: ${cargoTun.value} t`);
+}
+console.log("Testování dokončeno – vše funguje ✅");
